@@ -74,14 +74,17 @@ classDiagram
 
 class HTMLDoc {
   -content
-  HTMLDoc constructor();
-  setContent()
+  +constructor()
+  +setContent()
+  +writeFile()
 }
 
 class CSSDoc {
   -content
-  HTMLDoc constructor();
-  setContent()
+  +constructor()
+  +setContent()
+  +getLink()
+  +writeFile()
 }
 
 class Employee {
@@ -132,10 +135,12 @@ class Team {
  +getTeamName() string
  +setEmpolyees(...team_members);
  +getEmployees() Array~Employee~
- +getRoles() Array~Employee~
+ +getRoster() Array~Employee~
  +getManagers()  Array~Manager~
  +getEngineers() Array~Engineer~
  +getInterns() Array~Intern~
+ +findEmployees(key,value) Array~Employee~
+ +findEmployeeById(id) Array~Employee~
  +addEmployee(employee)
  +removeEmployee(employee)
  +showTeamProfile()
