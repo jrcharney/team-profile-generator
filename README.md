@@ -12,6 +12,8 @@ npm install
 
 ## Test
 
+Tests are done with Jest.
+
 ```bash
 npm test
 ```
@@ -70,10 +72,16 @@ THEN I exit the application, and the HTML is generated
 ```mermaid
 classDiagram
 
-class HTMLPage {
+class HTMLDoc {
   -content
-  HTMLPage constructor();
-  setContent
+  HTMLDoc constructor();
+  setContent()
+}
+
+class CSSDoc {
+  -content
+  HTMLDoc constructor();
+  setContent()
 }
 
 class Employee {
@@ -86,7 +94,7 @@ class Employee {
   +getName() string
   +getEmail() string
   +getId() number
-  +showRole() virtual
+  +getRole() virtual
   +showProfile() virtual
 }
 
@@ -95,7 +103,7 @@ class Manager {
   +constructor(name,email,office_number)
   +setOfficeNumber(number)
   +getOfficeNumber() number
-  +showRole() string
+  +getRole() string
   +showProfile()
 }
 
@@ -104,7 +112,7 @@ class Engineer {
   +constructor(name,email,github)
   +setGithub(string)
   +getGithub() string
-  -showRole() string
+  -getRole() string
   +showProfile()
 }
 
@@ -113,15 +121,18 @@ class Intern {
   +constructor(name,email,school)
   +setSchool()
   +getSchool() string
-  +showRole() string
+  +getRole() string
   +showProfile()
 }
 
 class Team {
  -Array~Employee~ team_members
  +constructor(team_name, ...team_members)
+ +setTeamName(string)
  +getTeamName() string
+ +setEmpolyees(...team_members);
  +getEmployees() Array~Employee~
+ +getRoles() Array~Employee~
  +getManagers()  Array~Manager~
  +getEngineers() Array~Engineer~
  +getInterns() Array~Intern~
@@ -133,7 +144,7 @@ class Team {
 Employee <|-- Manager
 Employee <|-- Engineer
 Employee <|-- Intern
-Team "1" o-- "1..*" Employees
+Team "1" o-- "1..*" Employee
 ```
 
 - The `Employee` class *is* the **generalization** (parent class) of `Manager`, `Engineer`, and `Intern` classes.
