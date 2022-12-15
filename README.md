@@ -97,6 +97,7 @@ class Employee {
   +getName() string
   +getEmail() string
   +getId() number
+  +getJSON() virtual
   +getRole() virtual
   +showProfile() virtual
 }
@@ -106,6 +107,7 @@ class Manager {
   +constructor(name,email,office_number)
   +setOfficeNumber(number)
   +getOfficeNumber() number
+  +getJSON() object
   +getRole() string
   +showProfile()
 }
@@ -115,6 +117,7 @@ class Engineer {
   +constructor(name,email,github)
   +setGithub(string)
   +getGithub() string
+  +getJSON() object
   -getRole() string
   +showProfile()
 }
@@ -124,6 +127,7 @@ class Intern {
   +constructor(name,email,school)
   +setSchool()
   +getSchool() string
+  +getJSON() object
   +getRole() string
   +showProfile()
 }
@@ -143,6 +147,7 @@ class Team {
  +findEmployeeById(id) Array~Employee~
  +addEmployee(employee)
  +removeEmployee(employee)
+ +getJSON() object
  +showTeamProfile()
 }
 
@@ -184,13 +189,15 @@ I will assume two things with this mockup and the diagrams:
 1. `id` is a **static** variable. Every employee has one. Each `id` is unique. No one `id` is the same.
 2. A `showProfile` method will be used. In C++ or Java, this would be set as a *virtual* function. This function will be overridden in the child classes of `Employee` since the output for each type of object will be different.
 3. The `getRole` method is also "virtual". Overrides ensue.
+4. Another virtual function that I felt like adding is `getJSON()`. It will make fetching the data from an object easier. "MVP" be damned!
+
 
 ## TODO List
 
 > Note: I've probably added more requirements than asked for this project, but its probably better that I did.  It's not a Minimal Viable Product (MVP) if it doesn't DO anything.
 
-- [ ] Install inquirer.
-- [ ] Install Jest for testing.
+- [x] Install inquirer.
+- [x] Install Jest for testing. (Note: Use the `--save-dev` attribute when installing it.)
 - [ ] Code stuff
   - [ ] `lib` directory should contain the classes
     - [ ] `Employee.js`
@@ -264,3 +271,49 @@ Note: For Engineers, you don't have to create a link for their github page, but 
 - This will likely be the first project where I ever use Jest for testing.
 - Also being used to help with coding will be ESLint and Prettier.
 
+## Adding Jest, ESLint and Prettier
+
+May as well.
+
+```
+npm install --save-dev jest
+npm init @eslint/config
+npm install --save-dev --save-exact prettier
+echo {}> .prettierrc.json
+npm install --save-dev eslint-config-prettier
+```
+
+For ESLint set things up to use NPM and hjjave the files saved as a JSON file.  The result should be a `.eslint.json` file.
+
+You can use ESLint directory by typing
+
+```
+npx esline file_you_want_to_lint.js
+```
+
+Prettier will use this command to format files.
+
+```
+npx prettier --write .
+```
+
+ESLint Config Prettier turns off all the ESLint rules that are unnecessary or that might conflict with Prettier
+
+In the `.eslintrc.json` file, change the `"extends": "eslint:recommended",` line to this.
+
+```json
+    "extends": [
+        "eslint:recommended",
+        "prettier"
+    ],
+```
+
+Prettier must be last on that list.
+
+Check out these pages for details
+
+* [ESLint getting started](https://eslint.org/docs/latest/user-guide/getting-started)
+* [Prettier Install](https://prettier.io/docs/en/install.html)
+* [ESLint config Prettier](https://github.com/prettier/eslint-config-prettier)
+
+Jest doesn't work with ES Modules by default, so a `jest.config.json` file was added, and the `npm test` command was modified to use them.

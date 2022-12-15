@@ -1,0 +1,6 @@
+{
+    "testEnvironment" : "jest-environment-node",
+    "transform" : {},
+    "bail": 1,
+    "verbose": true
+}
