@@ -1,3 +1,7 @@
+/**
+ * @file test/Employee.test.js
+ * @desc Unit testing for the Employee class
+ */
 import {describe, it, expect} from "@jest/globals";
 import Employee from "../lib/Employee.js";
 
@@ -22,7 +26,7 @@ describe("Employee",() => {
     });
     describe("getRole", () => {
         it("should return the employee role.", () => {
-            expect(employee.getRole()).toBe("Employee")
+            expect(employee.getRole()).toBe("Employee");
         });
     });
     describe("getJSON", () => {
@@ -34,7 +38,7 @@ describe("Employee",() => {
                 "email" : "jrcharney@fakeemail.com",
                 "role"  : "Employee"
             });
-        })
+        });
     });
     /*
     describe("showProfile", () => {
@@ -43,4 +47,4 @@ describe("Employee",() => {
         });
     });
     */
-})
+});
