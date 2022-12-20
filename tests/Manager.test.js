@@ -47,11 +47,17 @@
             });
         });
     });
-    /*
     describe("showProfile", () => {
-        it("should output nothing for Employee", () => {
-            expect(employee.showProfile()).toBe();
+        it("should return an Engineer profile", () => {
+            const actual = `<section id="${manager.getId()}" class="card"><div class="card-header ${manager.getRole().toLowerCase()}">
+            <h3>${manager.getName()}</h3>
+            <h4>${manager.getRole()}</h4>
+        </div><div class="card-body"><ul>
+            <li><strong>ID:</strong> ${manager.getId()}</li>
+            <li><strong>Email:</strong> <a href="mailto:${manager.getEmail()}">${manager.getEmail()}</a></li>
+            <li><strong>Office Number:</strong> ${manager.getOfficeNumber()}</li>
+        </ul></div></section>`;
+            expect(manager.showProfile()).toBe(actual);
         });
     });
-    */
 });

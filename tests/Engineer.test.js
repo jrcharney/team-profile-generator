@@ -47,11 +47,17 @@ describe("Engineer", () => {
             });
         });
     });
-    /*
     describe("showProfile", () => {
-        it("should output nothing for Employee", () => {
-            expect(employee.showProfile()).toBe();
+        it("should return an Engineer profile", () => {
+            const actual = `<section id="${engineer.getId()}" class="card"><div class="card-header ${engineer.getRole().toLowerCase()}">
+            <h3>${engineer.getName()}</h3>
+            <h4>${engineer.getRole()}</h4>
+        </div><div class="card-body"><ul>
+            <li><strong>ID:</strong> ${engineer.getId()}</li>
+            <li><strong>Email:</strong> <a href="mailto:${engineer.getEmail()}">${engineer.getEmail()}</a></li>
+            <li><strong>Github:</strong> <a href="https://github.com/${engineer.getGithub()}">@${engineer.getGithub()}</a></li>
+        </ul></div></section>`;
+            expect(engineer.showProfile()).toBe(actual);
         });
     });
-    */
 });

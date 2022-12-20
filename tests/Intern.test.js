@@ -47,11 +47,17 @@ describe("Intern",() => {
             });
         });
     });
-    /*
     describe("showProfile", () => {
-        it("should output nothing for Employee", () => {
-            expect(employee.showProfile()).toBe();
+        it("should return an Engineer profile", () => {
+            const actual = `<section id="${intern.getId()}" class="card"><div class="card-header ${intern.getRole().toLowerCase()}">
+            <h3>${intern.getName()}</h3>
+            <h4>${intern.getRole()}</h4>
+        </div><div class="card-body"><ul>
+            <li><strong>ID:</strong> ${intern.getId()}</li>
+            <li><strong>Email:</strong> <a href="mailto:${intern.getEmail()}">${intern.getEmail()}</a></li>
+            <li><strong>School:</strong> ${intern.getSchool()}</li>
+        </ul></div></section>`;
+            expect(intern.showProfile()).toBe(actual);
         });
     });
-    */
 });

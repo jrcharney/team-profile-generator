@@ -40,11 +40,17 @@ describe("Employee",() => {
             });
         });
     });
-    /*
     describe("showProfile", () => {
-        it("should output nothing for Employee", () => {
-            expect(employee.showProfile()).toBe();
+        it("should return a generic Employee profile", () => {
+            const actual = `<section id="${employee.getId()}" class="card"><div class="card-header ${employee.getRole().toLowerCase()}">
+            <h3>${employee.getName()}</h3>
+            <h4>${employee.getRole()}</h4>
+        </div><div class="card-body"><ul>
+            <li><strong>ID:</strong> ${employee.getId()}</li>
+            <li><strong>Email:</strong> <a href="mailto:${employee.getEmail()}">${employee.getEmail()}</a></li>
+            <li><strong>Key:</strong> Value</li>
+        </ul></div></section>`;
+            expect(employee.showProfile()).toBe(actual);
         });
     });
-    */
 });

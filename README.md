@@ -67,28 +67,74 @@ THEN I exit the application, and the HTML is generated
 
 > You're gonna love this. This class diagram the mockup is based on was created using [Mermaid](https://mermaid-js.github.io/mermaid/#/classDiagram). Markdown supports it. So does Github. See [UML-Diagrams.org](https://www.uml-diagrams.org/) for a better understanding of how to use UML.
 
-<!-- TODO: id might be static -->
+> Second note: This UML Class Diagram might change as ideas are added.
 
 ```mermaid
 classDiagram
 
+class Doc {
+  -filePath
+  -fileName
+  -fileContent
+  +constructor(filePath,fileName,fileContent)
+  +setFilePath(filePath)
+  +getFilePath()
+  +setFileName(fileName)
+  +getFileName()
+  +setFileContent(fileContent)
+  +addFileContent(fileContent)
+  +getFileContent()
+  +writeFile()
+}
+
 class HTMLDoc {
+  -stylesheet
+  -title
   -content
-  +constructor()
-  +setContent()
+  +constructor(filePath,fileName)
+  +setPageTitle(title)
+  +getPageTitle()
+  +setStyleSheet()
+  +getStyleSheet()
+  +setContent(content)
+  +getContent()
+  +addContent(content)
   +writeFile()
 }
 
 class CSSDoc {
   -content
-  +constructor()
-  +setContent()
+  +constructor(filePath,fileName)
+  +setContent(content)
+  +getContent()
+  +addContent()
   +getLink()
   +writeFile()
 }
 
+class Section {
+  -objId
+  -content
+  -classes
+  constructor(objId,content)
+  getId()
+  hasClasses()
+  hasClass(className)
+  setClasses(...classes)
+  getClasses()
+  addClasses(...classes)
+  removeClasses(...classes)
+  setContent(content)
+  getContent()
+  addContent(content)
+  getIdAttribute()
+  getClassAttribute()
+  write()
+}
+
 class Employee {
-  -number id$
+  -number nextId$
+  -number id
   -string name
   -string email
   +constructor(name,email)
@@ -109,7 +155,7 @@ class Manager {
   +getOfficeNumber() number
   +getJSON() object
   +getRole() string
-  +showProfile()
+  +showProfile() Section
 }
 
 class Engineer {
@@ -119,7 +165,7 @@ class Engineer {
   +getGithub() string
   +getJSON() object
   -getRole() string
-  +showProfile()
+  +showProfile() Section
 }
 
 class Intern {
@@ -129,7 +175,7 @@ class Intern {
   +getSchool() string
   +getJSON() object
   +getRole() string
-  +showProfile()
+  +showProfile() Section
 }
 
 class Team {
@@ -150,6 +196,9 @@ class Team {
  +getJSON() object
  +showTeamProfile()
 }
+
+Doc <|-- HTMLDoc
+Doc <|-- CSSDoc
 
 Employee <|-- Manager
 Employee <|-- Engineer
