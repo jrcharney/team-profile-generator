@@ -63,11 +63,94 @@ WHEN I decide to finish building my team
 THEN I exit the application, and the HTML is generated
 ```
 
-## Class Diagram
+## Class Diagrams
 
 > You're gonna love this. This class diagram the mockup is based on was created using [Mermaid](https://mermaid-js.github.io/mermaid/#/classDiagram). Markdown supports it. So does Github. See [UML-Diagrams.org](https://www.uml-diagrams.org/) for a better understanding of how to use UML.
 
 > Second note: This UML Class Diagram might change as ideas are added.
+
+### Employee classes
+
+This diagram shows how the `Employee` is used in the `Team` class and how `Manager`, `Engineer`, and `Intern` inherit some of their functionality through `Employee`. These classes work in `Team` with the help of polymorphism.
+
+```mermaid
+classDiagram
+
+class Employee {
+  -number nextId$
+  -number id
+  -string name
+  -string email
+  +constructor(name,email)
+  +setName(string)
+  +setEmail(string)
+  +getName() string
+  +getEmail() string
+  +getId() number
+  +getJSON() virtual
+  +getRole() virtual
+  +showProfile() virtual
+}
+
+class Manager {
+  -number office_number
+  +constructor(name,email,office_number)
+  +setOfficeNumber(number)
+  +getOfficeNumber() number
+  +getJSON() object
+  +getRole() string
+  +showProfile() Section
+}
+
+class Engineer {
+  -string github
+  +constructor(name,email,github)
+  +setGithub(string)
+  +getGithub() string
+  +getJSON() object
+  -getRole() string
+  +showProfile() Section
+}
+
+class Intern {
+  -string school
+  +constructor(name,email,school)
+  +setSchool()
+  +getSchool() string
+  +getJSON() object
+  +getRole() string
+  +showProfile() Section
+}
+
+class Team {
+ -Array~Employee~ team_members
+ +constructor(team_name, ...team_members)
+ +setTeamName(string)
+ +getTeamName() string
+ +setEmployees(...team_members);
+ +getEmployees() Array~Employee~
+ +getRoster() Array~Employee~
+ +getManagers()  Array~Manager~
+ +getEngineers() Array~Engineer~
+ +getInterns() Array~Intern~
+ +findEmployees(key,value) Array~Employee~
+ +findEmployeeById(id) Array~Employee~
+ +addEmployee(employee)
+ +removeEmployee(employee)
+ +getJSON() object
+ +showTeamProfile()
+}
+
+Employee <|-- Manager
+Employee <|-- Engineer
+Employee <|-- Intern
+Team "1" o-- "1..*" Employee
+```
+
+### The `Doc` and `Section` classes.
+`Doc` (short for "document) is used as the parent class of `HTMLDoc` and `CSSDoc` which create HTML and CSS documents, respectively.  In my previous assignment, I had made a `MDDoc`.
+
+`Section` is used to create `card` class objects. It's in this diagram because the other diagram was getting too crowded.
 
 ```mermaid
 classDiagram
@@ -132,79 +215,11 @@ class Section {
   write()
 }
 
-class Employee {
-  -number nextId$
-  -number id
-  -string name
-  -string email
-  +constructor(name,email)
-  +setName(string)
-  +setEmail(string)
-  +getName() string
-  +getEmail() string
-  +getId() number
-  +getJSON() virtual
-  +getRole() virtual
-  +showProfile() virtual
-}
-
-class Manager {
-  -number office_number
-  +constructor(name,email,office_number)
-  +setOfficeNumber(number)
-  +getOfficeNumber() number
-  +getJSON() object
-  +getRole() string
-  +showProfile() Section
-}
-
-class Engineer {
-  -string github
-  +constructor(name,email,github)
-  +setGithub(string)
-  +getGithub() string
-  +getJSON() object
-  -getRole() string
-  +showProfile() Section
-}
-
-class Intern {
-  -string school
-  +constructor(name,email,school)
-  +setSchool()
-  +getSchool() string
-  +getJSON() object
-  +getRole() string
-  +showProfile() Section
-}
-
-class Team {
- -Array~Employee~ team_members
- +constructor(team_name, ...team_members)
- +setTeamName(string)
- +getTeamName() string
- +setEmpolyees(...team_members);
- +getEmployees() Array~Employee~
- +getRoster() Array~Employee~
- +getManagers()  Array~Manager~
- +getEngineers() Array~Engineer~
- +getInterns() Array~Intern~
- +findEmployees(key,value) Array~Employee~
- +findEmployeeById(id) Array~Employee~
- +addEmployee(employee)
- +removeEmployee(employee)
- +getJSON() object
- +showTeamProfile()
-}
-
 Doc <|-- HTMLDoc
 Doc <|-- CSSDoc
-
-Employee <|-- Manager
-Employee <|-- Engineer
-Employee <|-- Intern
-Team "1" o-- "1..*" Employee
 ```
+
+### Notes about these diagrams
 
 - The `Employee` class *is* the **generalization** (parent class) of `Manager`, `Engineer`, and `Intern` classes.
 - A `Team` *has* `Employee`s. Thus the relationship between the team `Team` and `Employee` classes is an **aggregation**.
@@ -249,14 +264,15 @@ I will assume two things with this mockup and the diagrams:
 - [x] Install Jest for testing. (Note: Use the `--save-dev` attribute when installing it.)
 - [ ] Code stuff
   - [ ] `lib` directory should contain the classes
-    - [ ] `Employee.js`
-    - [ ] `Engineer.js`
-    - [ ] `Intern.js`
-    - [ ] `Manager.js`
-    - [ ] `Team.js` (not required, I just think it is approproate)
-    - [ ] `HTMLDoc.js` (Where do you think the HTML is going to come from?!)
-    - [ ] `CSSDoc.js`  (Where do you think the CSS is going to come from?!)
-  - [ ] `src` can contain template helper code
+    - [x] `Employee.js`
+    - [x] `Engineer.js`
+    - [x] `Intern.js`
+    - [x] `Manager.js`
+    - [x] `Team.js` (not required, I just think it is approproate)
+    - [x] `Doc.js` (Handles common methods that `HTMLDoc` and `CSSDoc` use)
+    - [x] `HTMLDoc.js` (Where do you think the HTML is going to come from?!)
+    - [x] `CSSDoc.js`  (Where do you think the CSS is going to come from?!)
+  - [x] `src` can contain template helper code (created, but haven't found a use for it)
   - [ ] Create tests in the ~~`__tests__`~~ `tests` directory for Jest for the following classes. (Seriously, why would anyone would anyone put their tests in a directory with leading underscores?! Problems ensue.)
     - [ ] `Employee` (`tests/Employee.test.js`)
     - [ ] `Engineer` (`tests/Engineer.test.js`)
@@ -337,7 +353,7 @@ For ESLint set things up to use NPM and hjjave the files saved as a JSON file.  
 You can use ESLint directory by typing
 
 ```
-npx esline file_you_want_to_lint.js
+npx eslint file_you_want_to_lint.js
 ```
 
 Prettier will use this command to format files.
