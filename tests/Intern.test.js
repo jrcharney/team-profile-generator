@@ -1,8 +1,8 @@
 /**
+ * @author Jason Charney (jrcharney@gmail.com)
  * @file test/Intern.test.js
  * @desc Unit testing for the Intern class
  */
-
 import {describe, it, expect} from "@jest/globals";
 import Intern from "../lib/Intern.js";
 

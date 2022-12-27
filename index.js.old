@@ -1,0 +1,305 @@
+import inquirer from "inquirer";
+import HTMLDoc from "./lib/HTMLDoc.js";
+import CSSDoc from "./lib/CSSDoc.js";
+import Team from "./lib/Team.js";
+
+
+/*
+let main_menu = {
+    // R: List Team Members  => ???
+    // C: Add Team Member    => type_question
+    // U: Modify Team Member => ???
+    // D: Remove Team Member => ???
+    // Generate Team Profile?
+    // Generate User Profile?
+    // Generate Style
+    // Shizenhakka => "You spontaneously combusted. Game over."
+    // Quit/Abort
+}
+*/
+
+let main_menu = {
+    "type": "list",
+    "name": "menu",
+    "message": "What would you like to do?",
+    "choices" : [
+        {
+            "name": "Set/Get Team Name",
+            "value": "team"
+        },
+        {
+            "name": "Assemble team members",
+            "value": "members"
+        },
+        {
+            "name": "Generate team/user profiles and documents",
+            "value": "generate"
+        },
+        new inquirer.Separator(),
+        {
+            "name" : "Get Help",
+            "value" : "help"
+        },
+        {
+            "name" : "Quit",
+            "value" : "exit"
+        }
+    ],
+    "default": "members",
+    "when": (answers) => answers.menu = "main"
+}
+
+let team_menu = {
+    "type": "list",
+    "name": "menu",
+    "message" : "What would you like to do?",
+    "choices" : [
+        {
+            "name": "Show Team Name",
+            "value" : "getTeamName"
+        },
+        {
+            "name": "Change Team Name",
+            "value": "setTeamName"
+        },
+        new inquirer.Separator(),
+        {
+            "name" : "Get Help",
+            "value" : "teamHelp"
+        },
+        {
+            "name" : "Return to the Main Menu",
+            "value" : "main"
+        },
+        {
+            "name" : "Quit",
+            "value" : "exit"
+        }
+    ],
+    "default": "getTeamName",
+    "when": (answers) => answers.task === "team"
+};
+
+let member_menu = {
+    "type": "list",
+    "name": "menu",
+    "message": "What would you like to do?",
+    "choices": [
+        {
+            "name": "List Team Members",
+            "value": "read"
+        },
+        {
+            "name": "Add Team Member",
+            "value": "create"
+        },
+        {
+            "name" : "Modify a Team Member",
+            "value" : "update"
+        },
+        {
+            "name" : "Remove a Team Member",
+            "value" : "delete"
+        },
+        new inquirer.Separator(),
+        {
+            "name" : "Get Help",
+            "value" : "memberHelp"
+        },
+        {
+            "name" : "Return to the Main Menu",
+            "value" : "main"
+        },
+        {
+            "name" : "Quit",
+            "value" : "exit"
+        }
+    ],
+    "default": "read",
+    "when": (answers) => answers.task === "member"
+}
+
+let generate_menu = {
+    "type": "list",
+    "name": "generateTask",
+    "message": "What would you like to do?",
+    "choices": [
+        {
+            "name" : "Generate team profile",
+            "value" : "teamProfile"
+        },
+        {
+            "name" : "Generate user profile",
+            "value" : "userProfile"
+        },
+        {
+            "name" : "Generate stylesheet",
+            "value" : "makeCSS"
+        },
+        {
+            "name" : "Generate everything",
+            "value" : "doEverything"
+        },
+        new inquirer.Separator(),
+        {
+            "name" : "Get Help",
+            "value" : "generateHelp"
+        },
+        {
+            "name" : "Return to the Main Menu",
+            "value" : "main"
+        },
+        {
+            "name" : "Quit",
+            "value" : "exit"
+        }
+    ],
+    "default": "doEverything",
+    "when": (answers) => answers.task === "generate"
+}
+
+let help_menu = {
+    "type": "list",
+    "name": "help",
+    "message": "What can I help you with?",
+    "choices": [
+        {
+            "name": "Team tasks",
+            "value": "teamHelp"
+        },
+        {
+            "name": "Team member tasks",
+            "value": "memberHelp"
+        },
+        {
+            "name": "Generate profiles and other documents",
+            "value": "generateHelp"
+        },
+        new inquirer.Separator(),
+        {
+            "name": "Return to the main menu",
+            "value": "main"
+        }
+    ]
+}
+
+let name_question = {
+    "type": "input",
+    "name": "employeeName",
+    "message": "What is the Employee's name?"
+}
+
+let type_question = {
+    "type": "list",
+    "name": "employeeType",
+    "message": "What type of employee would you like to add to your team?",
+    "choices" : [
+        "Manager",
+        "Engineer",
+        "Intern",
+        new inquirer.Separator(),
+        "Cancel"        // TODO: Back out of this prompt with this option
+    ],
+    "default": "engineer",
+    "filter": (val) => val.toLowerCase()
+}
+
+let office_number_question = {
+    "type": "number",
+    "name": "officeNumber",
+    "message": "What is the office ID number of the office they manage?",
+    "when": (answers) => answers.employeeType === "manager"
+}
+
+let github_question = {
+    "type": "input",
+    "name": "github",
+    "message": "What is this engineer's github username?",
+    "when": (answers) => answers.employeeType === "engineer"
+}
+
+let school_question = {
+    "type": "input",
+    "name": "school",
+    "type": "Where did this intern go to school?",
+    "when": (answers) => answers.employeeType === "intern"
+}
+
+
+let email_question = {
+    "message": "Please enter your email",
+    "name": "email",
+    "type": "input",
+    "default": () => {},
+    "validate": function (email) {
+        // Borrowed this REGEXP from https://gist.github.com/Amitabh-K/ae073eea3d5207efaddffde19b1618e8
+        let valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+
+        if (valid) {
+            console.log("Great job");
+            return true;
+        } else {
+            console.log(".  Please enter a valid email");
+            return false;
+        }
+    }
+}
+
+let submission_question = {
+    "type": "confirm",
+    "name": "submitData",
+    "message": "Are you ready to produce your team profile?",
+    "default": false
+}
+
+let exit_question = {
+    "type": "confirm",
+    "name": "exit",
+    "message": "Are you sure you want to quit?",
+    "default": false
+}
+
+function showMenu(){
+    const menus = [
+        main_menu,
+        team_menu,
+        generate_menu,
+        help_menu,
+        exit_question,
+    ];
+
+    const questions = [
+        main_menu,
+        team_menu,
+        generate_menu,
+
+        name_question,
+        type_question,
+        office_number_question,
+        github_question,
+        school_question,
+
+        submission_question,
+        exit_question,
+    ];
+    return inquirer.prompt(questions);
+}
+
+// TODO: Can I use an IIFE?
+const main = async () => {
+    await showMenu()
+    .then((answers) => {
+        const cssDoc  = new CSSDoc(`${answers.filePath}/assets/css`,"styles.css");
+        const htmlDoc = new HTMLDoc(answers.filePath,answers.fileName);
+        const team    = new Team(answers.teamName,...answers.employees);
+        htmlDoc.setStylesheet(`${cssDoc.getLink()}`);
+        htmlDoc.setContent(team.showTeamProfile());
+        cssDoc.writePage();     // In case we didn't do this.
+        htmlDoc.writePage();
+    })
+    .catch((error) => {
+        console.error("Error: ", error);
+    });
+};
+
+main(); // run main

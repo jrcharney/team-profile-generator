@@ -8,7 +8,9 @@ Homework Challenge 10, Due December 20, 2022
 
 ## Install
 
+```bash
 npm install
+```
 
 ## Test
 
@@ -32,6 +34,12 @@ Because this Challenge will require the use of the `inquirer` package, ensure th
 Testing is key to making code maintainable, you’ll also write unit tests for each part of your code and ensure that it passes all of them.
 
 This application won’t be deployed, you’ll also need to provide a link to a walkthrough video that demonstrates its functionality and all of the tests passing. You’ll need to submit a link to the video and add it to the README of your project.
+
+> Note: I took some liberties with this assignment.
+> 1. HTML and CSS pages are generated with `HTMLDOC` and `CSSDoc`.
+> 2. `inquirer` works. The version doesn't matter that much. The version of node on the other hand. Hopefully this is the last project where I use Node 16. I'm swapping out the harddrive to put a better version of Linux on it over the holiday break. When it's done, we shold be using Node 18 or greater.
+> 3. Tests are grouped using the `describe` method. In one test, the `it` method was used several times in a same test because the method it was testing accepted a few options. This is a rare exception.
+> 4. Most of the "setter" method didn't have tests because there isn't a good way to test them without a call to a "getter" method. If that's is a problem, I'll correct it later.
 
 ## User Story
 

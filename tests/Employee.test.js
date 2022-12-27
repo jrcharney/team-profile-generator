@@ -1,4 +1,5 @@
 /**
+ * @author Jason Charney (jrcharney@gmail.com)
  * @file test/Employee.test.js
  * @desc Unit testing for the Employee class
  */

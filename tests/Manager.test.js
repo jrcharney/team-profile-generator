@@ -1,4 +1,5 @@
 /**
+ * @author Jason Charney (jrcharney@gmail.com)
  * @file test/Manager.test.js
  * @desc Unit testing for the Manager class
  */

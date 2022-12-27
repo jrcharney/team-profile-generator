@@ -1,4 +1,5 @@
 /**
+ * @author Jason Charney (jrcharney@gmail.com)
  * @file test/Engineer.test.js
  * @desc Unit testing for the Engineer class
  */

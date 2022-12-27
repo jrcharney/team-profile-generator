@@ -1,6 +1,9 @@
 /**
+ * @author Jason Charney (jrcharney@gmail.com)
  * @file test/Team.test.js
  * @desc Unit testing for the Team class
+ * @note All the Employee types are used in this file because we can't simply import Employee and test Team functions abstractly.
+ *       Also, due to the complexity of just testing the getProfile method in each of the Employee types, testing showTeamProfile will not be done here.
  */
 import {describe, it, expect} from "@jest/globals";
 import Engineer from "../lib/Engineer.js";
@@ -35,6 +38,13 @@ describe("Team",() => {
             const actual = teamMembers;
             expect(aTeam.getEmployees()).toStrictEqual(actual);
         })
+    });
+    describe("getEmployeeById",() => {
+        it("should return a specific employee",() => {
+            // To check if our method works, we need to call a method from this object
+            const actual = { "id": 4, "name": "Henry M. 'Howling Mad' Murdock", "email": "hmmurdock@a-team.onion", "role": "Intern",   "school": "Howling Mad University" };
+            expect(aTeam.getEmployeeById(4).getJSON()).toStrictEqual(actual);
+        });
     });
     describe('getRoster',() => {
         it("should return a generic JSON list of employees", () => {
