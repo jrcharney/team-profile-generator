@@ -171,7 +171,7 @@ describe("Team",() => {
             expect(aTeam.findEmployees("role","Manager")).toStrictEqual(actual);
         })
     });
-    describe('fineEmployeeById',() => {
+    describe('findEmployeeById',() => {
         it("should find an employee by their id", () => {
             // find that foo' Murdock!
             const actual = [

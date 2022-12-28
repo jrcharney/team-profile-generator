@@ -12,6 +12,11 @@ export const menus = {
             console.log("Team Profile Generator");
             console.log("----------------------");
         },
+        "data" : () => {
+            // TODO: clear screen?
+            console.log("TPG > Data Menu");
+            console.log("---------------");
+        },
         "team" : () => {
             // TODO: clear screen?
             console.log("TPG > Team Menu");
@@ -49,6 +54,38 @@ export const menus = {
                 new inquirer.Separator(),
                 {
                     "name": "Get Help",
+                    "value": "help"
+                },
+                {
+                    "name": "Quit this program",
+                    "value": "exit"
+                }
+            ]
+        },
+        "data": {
+            "type" : "list",
+            "name" : "task",
+            "message" : "What would you like to do?",
+            "choices" : [
+                {
+                    "name": "Load JSON data into current data",
+                    "value": "loadData"
+                },
+                {
+                    "name": "Save current data as a JSON file",
+                    "value": "saveData"
+                },
+                {
+                    "name": "View Data as JSON (long and sloppy!)",
+                    "value": "viewJSONData"
+                },
+                {
+                    "name": "View Data as Table (neater, cleaner, SQL-like)",
+                    "value": "viewJSONTable"
+                },
+                new inquirer.Separator(),
+                {
+                    "name": "Tell me more about the items on this list.",
                     "value": "help"
                 },
                 {

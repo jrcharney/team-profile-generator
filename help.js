@@ -9,17 +9,21 @@ export const help = {
             console.log("TPG > Help Menu");
             console.log("---------------");
         },
+        "data" : () => {
+            console.log("TPG > Help > Data");
+            console.log("-----------------");
+        },
         "team" : () => {
-            console.log("TPG > Help > Team Help");
-            console.log("----------------------");        
+            console.log("TPG > Help > Team");
+            console.log("-----------------");
         },
         "members" : () => {
-            console.log("TPG > Help > Members Help");
-            console.log("-------------------------");
+            console.log("TPG > Help > Members");
+            console.log("--------------------");
         },
         "generate" : () => {
-            console.log("TPG > Help > Generate Help");
-            console.log("--------------------------");
+            console.log("TPG > Help > Generate");
+            console.log("---------------------");
         }
     },
     "messages": {
@@ -28,6 +32,15 @@ export const help = {
             console.log(`Created by Jason Charney (@jrcharney)`);
             console.log(`for Washington University Full Stack Bootcamp`);
             console.log(`(c) 2022`);
+        },
+        "data" : () => {
+            console.log("The Data menu was created to make inputing example data easier.");
+            console.log("However, it's usefulness can be extended into loading/saving data in a JSON format");
+            console.log("as a quick and easy way to read and write data for this program to use.")
+            console.log("- \"Load JSON data into current data\" will load data from a JSON file into the current data.")
+            console.log("- \"Save current data as a JSON file\" will save the data from the current data as a JSON file.");
+            console.log("- \"View Data as JSON\" will show the current data as JSON. This could be long and hard to read.");
+            console.log("- \"View Data as Table\" will use 'console.table' to make the JSON data be viewable as a table, sort of like in SQL. It is also much easier to read.");
         },
         "team" : () => {
             console.log("The Team menu just has two options");
@@ -50,7 +63,7 @@ export const help = {
             console.log("- \"Generate a team profile\" will create the index.html file.");
             console.log("- \"Generate a member profile\" will generate the user profile for a specific person. This should be in a folder called \"members\".");
             console.log("- \"Generate CSS Stylesheet\" will generate the CSS stylesheet for all documents");
-            console.log("- \"Generate a JavaScript file\" will generate the JavaScript file for all documents"");
+            console.log("- \"Generate a JavaScript file\" will generate the JavaScript file for all documents");
             console.log("- \"Do Everything!\" will do everything: generate the team profile, generate the member profiles, generate the stylesheet.");
         }
     }

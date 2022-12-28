@@ -14,9 +14,11 @@ import { menus } from "./menus.js";
 import { help } from "./help.js";
 import HTMLDoc from "./lib/HTMLDoc.js";
 import CSSDoc from "./lib/CSSDoc.js";
+import JSDoc from "./lib/JSDoc.js";
 import { CDNLink } from "./lib/CDNLink.js";
 import { CDNScript } from "./lib/CDNScript.js";
 import { Link } from "./lib/Link.js";
+import JSONDoc from "./lib/JSONDoc.js";
 
 //inquirer.prompt([]).then((answers) => {}).catch((error) => {});
 
@@ -28,11 +30,13 @@ let filepath = "./dist";
 /**
  * @method mainMenu
  * @desc the main menu of the function
+ * @todo Reorganize the menu options to be less convoluted.
  */
 function mainMenu(){
     //menus.headers.main();
     inquirer.prompt([menus.content.main]).then((answers) => {
         const tasks = {
+            "data"     : dataMenu,
             "team"     : teamMenu,
             "members"  : membersMenu,
             "generate" : generateMenu,
@@ -43,9 +47,101 @@ function mainMenu(){
     })
 }
 
+/* ## Data Menu Methods --------------- */
+
+/**
+ * @method dataMenu
+ * @desc Instead of going through all the tedious prompts, use a JSON file to load or save data
+ * @todo Should I rename this the File Menu?
+ * @todo header
+ * @todo help
+ * @todo questions
+ */
+function dataMenu(){
+    // menus.headers.data();
+    inquirer.prompt([menus.content.data]).then((answers) => {
+        const tasks = {
+            "loadData"      : loadJSONData,
+            "saveData"      : saveJSONData,
+            "viewJSONData"  : viewJSONData,
+            "viewJSONTable" : viewJSONTable,
+            "help"          : dataHelpMenu,
+            "main"          : mainMenu
+        };
+        return tasks[answers.task]();
+    });
+}
+
+function loadJSONData(){
+    inquirer.prompt([
+        {
+            "type": "input",
+            "name": "file",
+            "message": "Enter the location of the JSON file to read",
+            // TODO: validate
+            "default": "./dist/data.json"
+        }
+    ]).then((answers) => {
+        // TODO: check to make sure the file being read is a JSON file (has .json extenstion)
+        let filestring = answers.file.split('/');
+        const fn = filestring.pop();        // file name
+        const fp = filestring.join("/");    // file path
+        const file = new JSONDoc(fp,fn);
+        const data = file.readPage();
+        // TODO: What if multiple teams are found?
+        myTeam.readJSON(data);
+        console.log(`Data from ${answers.file} loaded into Team ${myTeam.getTeamName()}`);
+    }).catch((error) => console.error(`An error occurred (loadJSONData)`, error));
+}
+
+function saveJSONData(){
+    inquirer.prompt([
+        {
+            "type": "input",
+            "name": "file",
+            "message": "Enter where to save the JSON file",
+            // TODO: validate
+            "default": "./dist/data.json"
+        }
+    ]).then((answers) => {
+        // TODO: check to make sure the file being saved is a JSON file (has .json extenstion)
+        let filestring = answers.file.split('/');
+        const fn = filestring.pop();        // file name
+        const fp = filestring.join("/");    // file path
+        const file = new JSONDoc(fp,fn);
+        const data = myTeam.writeJSON();
+        file.setContent(data);
+        file.writePage();
+    }).catch((error) => console.error(`An error occurred (saveJSONData)`, error));
+}
+
+function viewJSONData(){
+    if(!myTeam.hasEmployees()){
+        console.log("Sorry, but this team doesn't have any members yet.");
+    }else{
+        console.log(myTeam.writeJSON());
+    }
+    return dataMenu();
+}
+
+function viewJSONTable(){
+    if(!myTeam.hasEmployees()){
+        console.log("Sorry, but this team doesn't have any members yet.");
+    }else{
+        console.table(myTeam.writeJSON());
+    }
+    return dataMenu();
+}
+
+/* ## Team Menu Methods ------------------- */
+
 /**
  * @method teamMenu
  * @desc show the options for modifying a team
+ * @todo Create team objects
+ * @todo List team objects
+ * @todo Select the team object we want to manipulate
+ * @todo Delete a team object
  */
  function teamMenu(){
     //menus.headers.team();
@@ -93,6 +189,8 @@ function setTeamName(){
         return mainMenu()
     }).catch((error) => console.error(`An error occurred (setTeamName)`, error));
 }
+
+/* ## Member Menu Methods --------------- */
 
 /**
  * @method membersMenu
@@ -482,6 +580,8 @@ function findMembers(){
     }).catch((error) => console.error(`An error occurred (findMembers)`, error));
 }
 
+/* ## Generate Menu Methods ------------- */
+
 /**
  * @method generateMenu
  * @desc The menu for the generating methods
@@ -506,7 +606,7 @@ function generateMenu(){
 }
 
 function getFilePath(){
-    console.log(`Files are stored at ${filePath}`);
+    console.log(`Files are stored at ${filepath}`);
     return generateMenu();
 }
 
@@ -526,7 +626,7 @@ function setFilePath(){
     }]).then((answers) => {
         filepath = answers.filepath;
         console.log(`Filepath is now set to ${filepath}`);
-    }).catch((errors) => console.error(`An error occurred (setFilePath)`, error))
+    }).catch((error) => console.error(`An error occurred (setFilePath)`, error))
     return generateMenu();
 }
 
@@ -580,11 +680,11 @@ function generateMemberProfile(employee){
     const nameHeader = `<h1>${employee.getName()}</h1>`;
     const roleHeader = `<h2>${employee.getRole()}</h2>`;
     const idNumber  = `<strong>ID:</strong> ${employee.getId()}`;
-    const emailLink = `<strong>Email:</strong> <a href="mailto:${employee.getEmail()}" title="Click here to send and email to ${employee,getName()}"  target="_blank">Email</a>`;
+    const emailLink = `<strong>Email:</strong> <a href="mailto:${employee.getEmail()}" title="Click here to send and email to ${employee.getName()}"  target="_blank">Email</a>`;
     const specials = {
         "Manager"  : () => `<strong>Office Number: </strong> ${employee.getOfficeNumber()}`,
         "Engineer" : () => `<strong>Github: </strong> <a href="https://github.com/${employee.getGithub()}" title="Click here to go to ${employee.getName()}'s Github Profile" target="_blank">@${employee.getGithub()}</a>`,
-        "Intern"   : () => `<strong>School:</strong> ${employee.getSchool()}`;
+        "Intern"   : () => `<strong>School:</strong> ${employee.getSchool()}`
     }
     const special = specials[employee.getRole()]();
     const teamHeader = `<div><h1>${myTeam.getTeamName()}</h1></div>`;
@@ -706,6 +806,8 @@ function generateAll(){
 
 }
 
+/* ## Help Menus ------------- */
+
 /**
  * @method helpMenu
  * @desc Show the help menu
@@ -716,6 +818,7 @@ function helpMenu(){
     help.headers.main();
     inquirer.prompt([menus.help.main]).then((answers) => {
         const tasks = {
+            "data" : dataHelpMenu,
             "team" : teamHelpMenu,
             "members" : membersHelpMenu,
             "generate" : generateHelpMenu,
@@ -724,6 +827,22 @@ function helpMenu(){
                 return helpMenu();
             },
             "back"  : mainMenu
+        };
+        return tasks[answers.menu]();
+    });
+}
+
+/**
+ * @method dataHelpMenu
+ * @desc Options for quickly loading and saving data as JSON before processing it as HTML
+ */
+function dataHelpMenu(){
+    help.headers.team();
+    help.messages.team();
+    inquirer.prompt([menus.help.data]).then((answers) => {
+        const tasks = {
+            "back": dataMenu,
+            "help": helpMenu
         };
         return tasks[answers.menu]();
     });
@@ -777,6 +896,8 @@ function generateHelpMenu(){
     });
 }
 
+/* ## Exit Command ------------ */
+
 /**
  * @method exitProgram
  * @desc Ask the user if they would like to still use the program
@@ -797,4 +918,15 @@ function exitProgram(){
     });
 }
 
-mainMenu();
+/* ## Main Method ------------- */
+
+/**
+ * @method main
+ * @description the main method. This program has grown way too large. It probably should have a central function
+ */
+ function main(){
+    mainMenu();
+}
+
+// mainMenu();
+main();
