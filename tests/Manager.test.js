@@ -3,11 +3,10 @@
  * @file test/Manager.test.js
  * @desc Unit testing for the Manager class
  */
+import {describe, it, expect} from "@jest/globals";
+import Manager from "../lib/Manager.js";
 
- import {describe, it, expect} from "@jest/globals";
- import Manager from "../lib/Manager.js";
-
- describe("Manager", () => {
+describe("Manager", () => {
     // This object will be used for all the test below.
     const manager = new Manager("Jason Charney","jrcharney@fakeemail.com",1);
 
@@ -44,7 +43,7 @@
                 "name"         : "Jason Charney",
                 "email"        : "jrcharney@fakeemail.com",
                 "role"         : "Manager",
-                "officeNumber" : 1
+                "office_number" : 1
             });
         });
     });

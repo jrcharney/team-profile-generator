@@ -16,7 +16,7 @@ describe("Team",() => {
     // These men promptly escaped from a maximum security stockade to the Los Angeles underground. 
     // Today, still wanted by the government, they survive as soldiers of fortune. 
     // If you have a problem, if no one else can help, and if you can find them, maybe you can hire... the A-Team."
-    const teamName = "The A-Team";
+    const teamName = "The A-Team";  // pew,pew,pew,pew,pew,pew,pew,pew,pew!!! 
     const teamMembers = [
         // They all have .onion emails because, well, they are supposed to be hard to find
         new Manager("John 'Hannibal' Smith","hannibal@a-team.onion",1),
@@ -30,14 +30,53 @@ describe("Team",() => {
     describe("getTeamName",() => {
         it("should return the team name.",() => {
             expect(aTeam.getTeamName()).toBe("The A-Team");
-        })
+        });
     });
     // TODO: test setEmployees
     describe("getEmployees",() => {
         it("should return a list of employees",() => {
             const actual = teamMembers;
             expect(aTeam.getEmployees()).toStrictEqual(actual);
+        });
+    });
+    describe("countEmployees",() => {
+        it("should return the number of employees on the team",() => {
+            const actual = 4;
+            expect(aTeam.countEmployees()).toBe(actual);
         })
+    });
+    describe("hasEmployees",() => {
+        it("should return if a team has employees",() => {
+            const actual = true;
+            expect(aTeam.hasEmployees()).toBe(actual);
+        })
+    });
+    describe("getNameChoices",() => {
+        it("should return a list of employee names and ids suitable for an inquirer list to use",() => {
+            const actual = [
+                {
+                    "name"  : "John 'Hannibal' Smith",
+                    "value" : 1
+                },
+                {
+                    "name"  : "Templeton 'Faceman' Peck",
+                    "value" : 2
+                },
+                {
+                    "name"  : "Bosco Albert 'B.A.' Baracus",
+                    "value" : 3
+                },
+                {
+                    "name"  : "Henry M. 'Howling Mad' Murdock",
+                    "value" : 4
+                },
+                {
+                    "name"  : "Nobody",
+                    "value" : 0
+                }
+            ];
+            expect(aTeam.getNameChoices()).toStrictEqual(actual);
+        });
     });
     describe("getEmployeeById",() => {
         it("should return a specific employee",() => {
@@ -46,10 +85,28 @@ describe("Team",() => {
             expect(aTeam.getEmployeeById(4).getJSON()).toStrictEqual(actual);
         });
     });
+    describe("isManager",() => {
+        it("should return true if an employee is a Manager", () => {
+            // Hannibal should be a manager
+            expect(aTeam.isManager(1)).toBe(true);
+        });
+    });
+    describe("isEngineer",() => {
+        it("should return true if an employee is an Engineer", () => {
+            // B.A. should be an engineer
+            expect(aTeam.isEngineer(3)).toBe(true);
+        });
+    });
+    describe("isIntern",() => {
+        it("should return true if an employee is an Intern", () => {
+            // Murdock should be an intern
+            expect(aTeam.isIntern(4)).toBe(true);
+        });
+    });
     describe('getRoster',() => {
         it("should return a generic JSON list of employees", () => {
             const actual = [
-                { "id": 1, "name": "John 'Hannibal' Smith",          "email": "hannibal@a-team.onion",  "role": "Manager", "officeNumber": 1 },
+                { "id": 1, "name": "John 'Hannibal' Smith",          "email": "hannibal@a-team.onion",  "role": "Manager", "office_number": 1 },
                 { "id": 2, "name": "Templeton 'Faceman' Peck",       "email": "faceman@a-team.onion",   "role": "Engineer", "github": "faceman" },
                 { "id": 3, "name": "Bosco Albert 'B.A.' Baracus",    "email": "bosco@a-team.onion",     "role": "Engineer", "github": "babaracus" },
                 { "id": 4, "name": "Henry M. 'Howling Mad' Murdock", "email": "hmmurdock@a-team.onion", "role": "Intern",   "school": "Howling Mad University" }
@@ -60,7 +117,7 @@ describe("Team",() => {
     describe('getManagers',() => {
         it("should return a generic JSON list of employees who are Managers", () => {
             const actual = [
-                { "id": 1, "name": "John 'Hannibal' Smith",          "email": "hannibal@a-team.onion",  "role": "Manager", "officeNumber": 1 }
+                { "id": 1, "name": "John 'Hannibal' Smith",          "email": "hannibal@a-team.onion",  "role": "Manager", "office_number": 1 }
             ];
             expect(aTeam.getManagers()).toStrictEqual(actual);
         })
@@ -109,7 +166,7 @@ describe("Team",() => {
         it("should find an employee by their role", () => {
             // Find Hannibal
             const actual = [
-                { "id": 1, "name": "John 'Hannibal' Smith",          "email": "hannibal@a-team.onion",  "role": "Manager", "officeNumber": 1 }
+                { "id": 1, "name": "John 'Hannibal' Smith",          "email": "hannibal@a-team.onion",  "role": "Manager", "office_number": 1 }
             ];
             expect(aTeam.findEmployees("role","Manager")).toStrictEqual(actual);
         })

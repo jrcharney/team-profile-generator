@@ -14,6 +14,8 @@ npm install
 
 ## Test
 
+> So many tests! Over 25 of them!
+
 Tests are done with Jest.
 
 ```bash
@@ -137,6 +139,13 @@ class Team {
  +getTeamName() string
  +setEmployees(...team_members);
  +getEmployees() Array~Employee~
+ +countEmployees() number
+ +hasEmployees() boolean
+ +getNameChoices() Array~object~
+ +getEmployeeById(id) Employee
+ +isManager(id) boolean
+ +isEngineer(id) boolean
+ +isIntern(id) boolean
  +getRoster() Array~Employee~
  +getManagers()  Array~Manager~
  +getEngineers() Array~Engineer~
@@ -271,7 +280,7 @@ I will assume two things with this mockup and the diagrams:
 - [x] Install inquirer.
 - [x] Install Jest for testing. (Note: Use the `--save-dev` attribute when installing it.)
 - [ ] Code stuff
-  - [ ] `lib` directory should contain the classes
+  - [x] `lib` directory should contain the classes
     - [x] `Employee.js`
     - [x] `Engineer.js`
     - [x] `Intern.js`
@@ -281,43 +290,43 @@ I will assume two things with this mockup and the diagrams:
     - [x] `HTMLDoc.js` (Where do you think the HTML is going to come from?!)
     - [x] `CSSDoc.js`  (Where do you think the CSS is going to come from?!)
   - [x] `src` can contain template helper code (created, but haven't found a use for it)
-  - [ ] Create tests in the ~~`__tests__`~~ `tests` directory for Jest for the following classes. (Seriously, why would anyone would anyone put their tests in a directory with leading underscores?! Problems ensue.)
-    - [ ] `Employee` (`tests/Employee.test.js`)
-    - [ ] `Engineer` (`tests/Engineer.test.js`)
-    - [ ] `Intern`   (`tests/Intern.test.js`)
-    - [ ] `Manager`  (`tests/Manager.test.js`)
-    - [ ] `Team`     (`tests/Team.test.js`)  (not required, I just think it makes sense to create a collection.)
+  - [x] Create tests in the ~~`__tests__`~~ `tests` directory for Jest for the following classes. (Seriously, why would anyone would anyone put their tests in a directory with leading underscores?! Problems ensue.)
+    - [x] `Employee` (`tests/Employee.test.js`)
+    - [x] `Engineer` (`tests/Engineer.test.js`)
+    - [x] `Intern`   (`tests/Intern.test.js`)
+    - [x] `Manager`  (`tests/Manager.test.js`)
+    - [x] `Team`     (`tests/Team.test.js`)  (not required, I just think it makes sense to create a collection.)
   - [ ] Create a prompt where you have the following options
-    - [ ] Ask if you would like to create a team
-    - [ ] List teams
-    - [ ] Ask if you would like to delete a team
-    - [ ] List team members
+    - [ ] Ask if you would like to create a team (likely in the next version)
+    - [ ] List teams (likely in the next version)
+    - [ ] Ask if you would like to delete a team (next version)
+    - [x] List team members
     - [ ] Show a team member's profile
-    - [ ] Ask if you want to add a manager to a team (limit 1)
-    - [ ] Ask if you want to add an engineer to a team (at least 1)
-    - [ ] Ask if you want to add an intern to a team
-    - [ ] Ask if you want to name the team (not required, I just think a team should have a name)
-    - [ ] Ask if you would like to remove a team member
-    - [ ] Add an option to exit the application
-  - [ ] When you add a manager
-    - [ ] Enter the manager's name
-    - [ ] ~~Enter the manager's employee id~~ (This should be statically assigned)
-    - [ ] Enter the office number
-    - [ ] Verify the input data
-    - [ ] Return to the main menu when complete
-  - [ ] When you add a engineer
-    - [ ] Enter the engineer's name
-    - [ ] ~~Enter the engineer's employee id~~ (This should be statically assigned)
-    - [ ] Enter the engineer's github
-    - [ ] Verify the input data
-    - [ ] Return to the main menu when complete
-  - [ ] When you add an intern
-    - [ ] Enter the intern's name
-    - [ ] ~~Enter the intern's employee id~~ (This should be statically assigned)
-    - [ ] Enter the intern's school
-    - [ ] Verify the input data
-    - [ ] Return to the main menu when complete
-  - [ ] Have an option to list the members of the team (Pretty sure there's an `inquirer-table` that can help us out.)
+    - [x] Ask if you want to add a manager to a team (limit 1)
+    - [x] Ask if you want to add an engineer to a team (at least 1)
+    - [x] Ask if you want to add an intern to a team
+    - [x] Ask if you want to name the team (not required, I just think a team should have a name)
+    - [x] Ask if you would like to remove a team member
+    - [x] Add an option to exit the application
+  - [x] When you add a manager
+    - [x] Enter the manager's name
+    - [x] ~~Enter the manager's employee id~~ (This should be statically assigned)
+    - [x] Enter the office number
+    - [x] Verify the input data
+    - [x] Return to the main menu when complete
+  - [x] When you add a engineer
+    - [x] Enter the engineer's name
+    - [x] ~~Enter the engineer's employee id~~ (This should be statically assigned)
+    - [x] Enter the engineer's github
+    - [x] Verify the input data
+    - [x] Return to the main menu when complete
+  - [x] When you add an intern
+    - [x] Enter the intern's name
+    - [x] ~~Enter the intern's employee id~~ (This should be statically assigned)
+    - [x] Enter the intern's school
+    - [x] Verify the input data
+    - [x] Return to the main menu when complete
+  - [x] Have an option to list the members of the team (Pretty sure there's an `inquirer-table` that can help us out.) We can do this with `console.table()`!
   - [ ] Have an option to list the information of a team member
   - [ ] Have options to edit information
   - [ ] When exiting the application, verify if you want to construct the data
@@ -356,7 +365,7 @@ echo {}> .prettierrc.json
 npm install --save-dev eslint-config-prettier
 ```
 
-For ESLint set things up to use NPM and hjjave the files saved as a JSON file.  The result should be a `.eslint.json` file.
+For ESLint set things up to use NPM and have the files saved as a JSON file.  The result should be a `.eslint.json` file.
 
 You can use ESLint directory by typing
 
