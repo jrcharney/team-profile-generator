@@ -12,33 +12,18 @@ import Team from "./lib/Team.js";
 import { questions } from "./questions.js";
 import { menus } from "./menus.js";
 import { help } from "./help.js";
+import HTMLDoc from "./lib/HTMLDoc.js";
+import CSSDoc from "./lib/CSSDoc.js";
+import { CDNLink } from "./lib/CDNLink.js";
+import { CDNScript } from "./lib/CDNScript.js";
+import { Link } from "./lib/Link.js";
 
 //inquirer.prompt([]).then((answers) => {}).catch((error) => {});
 
 // TODO: Have Team menu create and destroy team objects
 const myTeam = new Team();
 
-// TODO: find a way to use a Team object as an argument
-// TODO: export this list into a separate file
-/*
-const choices = {
-    "who": () => {
-        const employees = myTeam.getEmployees().map((employee) => {
-            return {
-                "name"  : employee.getName(),
-                "value" : employee.getId()
-            }
-        });
-        return [
-            ...employees,
-            {
-                "name": "Nobody",
-                "value": 0
-            }
-        ];
-    }
-}
-*/
+let filepath = "./dist";
 
 /**
  * @method mainMenu
@@ -497,12 +482,17 @@ function findMembers(){
     }).catch((error) => console.error(`An error occurred (findMembers)`, error));
 }
 
-// TODO: THE BIG FINALLY!
+/**
+ * @method generateMenu
+ * @desc The menu for the generating methods
+ */
 function generateMenu(){
     //menus.headers.generate();
     inquirer.prompt([menus.content.generate]).then((answers) => {
         // NOTE: All these options should return to the generate menu
         const tasks = {
+            "getFilePath"     : getFilePath,
+            "setFilePath"     : setFilePath,
             "generateTeam"    : generateTeamProfile,
             "generateMembers" : generateMemberProfiles,
             "generateCSS"     : generateStylesheet,
@@ -512,6 +502,31 @@ function generateMenu(){
         };
         return tasks[answers.task]();
     });
+}
+
+function getFilePath(){
+    console.log(`Files are stored at ${filePath}`);
+    return generateMenu();
+}
+
+function setFilePath(){
+    inquirer.prompt([{
+        // TODO: What is the current working directory?
+        "type"     : "input",
+        "name"     : "filepath",
+        "message"  : "Where should I put the files?",
+        "validate" : (answer) => {
+            if(!answer){
+                return "Filepath cannot be empty. Please enter a filepath."
+            }
+            return true;
+        },
+        "default" : "./dist"
+    }]).then((answers) => {
+        filepath = answers.filepath;
+        console.log(`Filepath is now set to ${filepath}`);
+    }).catch((errors) => console.error(`An error occurred (setFilePath)`, error))
+    return generateMenu();
 }
 
 /**
@@ -524,14 +539,62 @@ function generateTeamProfile(){
         console.log("You need to build your team first.");
         return mainMenu();
     }
+    // TODO: Fill in this part
+    // TODO: in a future version, use the team name as the file name, but have index.html link to each of the teams.
+    const teamProfile = new HTMLDoc(filepath,"index.html");
+    teamProfile.setPageTitle(`${myTeam.getTeamName()}`);
+    teamProfile.addStylesheets(new CDNLink("https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css","sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA=="));
+    teamProfile.addJavaScripts(new CDNScript("https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js","sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g=="));
+    teamProfile.addStylesheets(new Link(`${filepath}/assets/css/styles.css`));
+    const teamHeader = `<h1>${myTeam.getTeamName()}</h1>`;
+    const items = myTeam.getEmployees().map((employee) => {
+        const filename = employee.getName().replace(/[^a-z]/gi,'') + ".html";
+        const url = `${filepath}/members/${filename}`;
+        const name = employee.getName();
+        const role = employee.getRole();
+        const link = `<li><strong>${role}</strong>: <a href="${url}">${name}</a></li>\n`;
+        return link;
+    });
+    const teamMembers = `<ul>\n${items}<ul>\n`;
+    // TODO: styling
+    teamProfile.addContent(teamHeader,teamMembers);
+    teamProfile.writePage();
 }
 
 /**
  * @method generateMemberProfile
  * @desc Generate a profile for a specific team member
  */
-function generateMemberProfile(){
+function generateMemberProfile(employee){
     // TODO: Member profile pages needs a link to the team profile
+    // TODO: Members need to be put in a child folder called members
+    // In the file name, all non-alphabetic characters will be removed
+    const filename = employee.getName().replace(/[^a-z]/gi,'') + ".html";
+    const memberProfile = new HTMLDoc(`${filepath}/members`,filename);
+    memberProfile.setPageTitle(`${myTeam.getTeamName()} - ${employee.getName()}`);
+    memberProfile.addStylesheets(new CDNLink("https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css","sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA=="));
+    memberProfile.addJavaScripts(new CDNScript("https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js","sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g=="));
+    memberProfile.addStylesheets(new Link(`${filepath}/assets/css/styles.css`));
+    // TODO: What if the file already exists?
+    const nameHeader = `<h1>${employee.getName()}</h1>`;
+    const roleHeader = `<h2>${employee.getRole()}</h2>`;
+    const idNumber  = `<strong>ID:</strong> ${employee.getId()}`;
+    const emailLink = `<strong>Email:</strong> <a href="mailto:${employee.getEmail()}" title="Click here to send and email to ${employee,getName()}"  target="_blank">Email</a>`;
+    const specials = {
+        "Manager"  : () => `<strong>Office Number: </strong> ${employee.getOfficeNumber()}`,
+        "Engineer" : () => `<strong>Github: </strong> <a href="https://github.com/${employee.getGithub()}" title="Click here to go to ${employee.getName()}'s Github Profile" target="_blank">@${employee.getGithub()}</a>`,
+        "Intern"   : () => `<strong>School:</strong> ${employee.getSchool()}`;
+    }
+    const special = specials[employee.getRole()]();
+    const teamHeader = `<div><h1>${myTeam.getTeamName()}</h1></div>`;
+    const cardHeader = `<div class="card-header">\n${nameHeader}\n${roleHeader}\n</div>\n`;
+    const items = [idNumber,emailLink,special].map((item) => `<li>${item}</li>\n`);
+    const list  = `<ul>${items}</ul>`;
+    const cardBody = `<div class="card-body">${list}</div>\n`;
+    const card = `<div class="card">${cardHeader}${cardBody}</div>`;
+    const footer = `<hr>\n<a href="./index.html">Return to Team Profile</a>`;
+    memberProfile.addContent(teamHeader,card,footer);
+    memberProfile.writePage();
 }
 
 /**
@@ -590,6 +653,8 @@ function generateStylesheet(){
         return mainMenu();
     }
     // TODO: Might use Bootstrap
+    // TODO: Put the stylesheet in the ${filepath}/assets/css directory
+    const stylesheet = new CSSDoc(`${filepath}/assets/css`,`styles.css`);
 }
 
 /**
@@ -632,7 +697,7 @@ function generateAll(){
  * @param {string} previous previous location
  * @returns 
  */
- function helpMenu(){
+function helpMenu(){
     help.headers.main();
     inquirer.prompt([menus.help.main]).then((answers) => {
         const tasks = {

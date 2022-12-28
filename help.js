@@ -45,6 +45,8 @@ export const help = {
         },
         "generate" : () => {
             console.log("The Generate menu is used to generate documents and has the following options.")
+            console.log("- \"Get file path\" show the file path where the files will be put.");
+            console.log("- \"Set file path\" is used to set where the files will be put.");
             console.log("- \"Generate a team profile\" will create the index.html file.");
             console.log("- \"Generate a member profile\" will generate the user profile for a specific person. This should be in a folder called \"members\".");
             console.log("- \"Generate CSS Stylesheet\" will generate the CSS stylesheet for all documents");
