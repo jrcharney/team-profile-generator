@@ -496,6 +496,7 @@ function generateMenu(){
             "generateTeam"    : generateTeamProfile,
             "generateMembers" : generateMemberProfiles,
             "generateCSS"     : generateStylesheet,
+            "generateJS"      : generateJavaScript,
             "everything"      : generateAll,
             "help"            : generateHelpMenu,
             "main"            : mainMenu
@@ -655,6 +656,20 @@ function generateStylesheet(){
     // TODO: Might use Bootstrap
     // TODO: Put the stylesheet in the ${filepath}/assets/css directory
     const stylesheet = new CSSDoc(`${filepath}/assets/css`,`styles.css`);
+    stylesheet.writePage();
+    // TODO: need to add content to the file!
+}
+
+function generateJavaScript(){
+    if(!myTeam.hasEmployees()){
+        console.log("You need to build your team first.");
+        return mainMenu();
+    }
+    // TODO: Might use Bootstrap
+    // TODO: Put the stylesheet in the ${filepath}/assets/css directory
+    const javascript = new JSDoc(`${filepath}/assets/css`,`script.js`);
+    javascript.writePage();
+    // TODO: need to add content to the file!
 }
 
 /**

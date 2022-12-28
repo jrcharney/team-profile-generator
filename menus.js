@@ -128,6 +128,14 @@ export const menus = {
             "message" : "What would you like to do?",
             "choices" : [
                 {
+                    "name"  : "Show file path",
+                    "value" : "getFilePath"
+                },
+                {
+                    "name"  : "Set the file path",
+                    "value" : "setFilePath"
+                },
+                {
                     "name"  : "Generate a team profile",
                     "value" : "generateTeam"
                 },
@@ -138,6 +146,10 @@ export const menus = {
                 {
                     "name"  : "Generate a CSS Stylesheet",
                     "value" : "generateCSS"
+                },
+                {
+                    "name"  : "Generate a JavaScript file",
+                    "value" : "generateJS"
                 },
                 {
                     "name": "Do Everything!",

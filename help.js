@@ -50,6 +50,7 @@ export const help = {
             console.log("- \"Generate a team profile\" will create the index.html file.");
             console.log("- \"Generate a member profile\" will generate the user profile for a specific person. This should be in a folder called \"members\".");
             console.log("- \"Generate CSS Stylesheet\" will generate the CSS stylesheet for all documents");
+            console.log("- \"Generate a JavaScript file\" will generate the JavaScript file for all documents"");
             console.log("- \"Do Everything!\" will do everything: generate the team profile, generate the member profiles, generate the stylesheet.");
         }
     }
