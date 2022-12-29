@@ -32,6 +32,7 @@ export const help = {
             console.log(`Created by Jason Charney (@jrcharney)`);
             console.log(`for Washington University Full Stack Bootcamp`);
             console.log(`(c) 2022`);
+            console.log("------------------------");
         },
         "data" : () => {
             console.log("The Data menu was created to make inputing example data easier.");
@@ -41,11 +42,13 @@ export const help = {
             console.log("- \"Save current data as a JSON file\" will save the data from the current data as a JSON file.");
             console.log("- \"View Data as JSON\" will show the current data as JSON. This could be long and hard to read.");
             console.log("- \"View Data as Table\" will use 'console.table' to make the JSON data be viewable as a table, sort of like in SQL. It is also much easier to read.");
+            console.log("------------------------");
         },
         "team" : () => {
             console.log("The Team menu just has two options");
             console.log("- \"Get/Show team name\" will fetch the name of your team.");
             console.log("- \"Set/Update team name\" will ask you what to name or rename your team.");
+            console.log("------------------------");
         },
         "members" : () => {
             console.log("The Member Member Menu is used to assemble your team and has the following options");
@@ -55,6 +58,7 @@ export const help = {
             console.log("- \"Add a team member\" will start the creation process for a new team member. Provide the name, the role, and a specific type of information depending on their role.");
             console.log("- \"Modify a team member\" will require you to look up what team member to modify first then the piece of information to modify.");
             console.log("- \"Remove a team member\" will require you to look up what team member to remove first then ask if you would like to remove them from the team. There is no undo.");
+            console.log("------------------------");
         },
         "generate" : () => {
             console.log("The Generate menu is used to generate documents and has the following options.")
@@ -65,6 +69,7 @@ export const help = {
             console.log("- \"Generate CSS Stylesheet\" will generate the CSS stylesheet for all documents");
             console.log("- \"Generate a JavaScript file\" will generate the JavaScript file for all documents");
             console.log("- \"Do Everything!\" will do everything: generate the team profile, generate the member profiles, generate the stylesheet.");
+            console.log("------------------------");
         }
     }
 }

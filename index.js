@@ -61,58 +61,84 @@ function dataMenu(){
     // menus.headers.data();
     inquirer.prompt([menus.content.data]).then((answers) => {
         const tasks = {
-            "loadData"      : loadJSONData,
-            "saveData"      : saveJSONData,
-            "viewJSONData"  : viewJSONData,
-            "viewJSONTable" : viewJSONTable,
-            "help"          : dataHelpMenu,
-            "main"          : mainMenu
+            "loadData"  : loadJSONData,
+            "saveData"  : saveJSONData,
+            "viewData"  : viewJSONData,
+            "viewTable" : viewJSONTable,
+            "help"      : dataHelpMenu,
+            "main"      : mainMenu
         };
         return tasks[answers.task]();
     });
 }
 
+/**
+ * @method loadJSONData
+ * @desc Use a JSON file to load data instead of tediously going through all the prompts to load data.
+ * @returns 
+ * @status iffy. For some reason, it executes without asking.
+ */
 function loadJSONData(){
     inquirer.prompt([
         {
             "type": "input",
-            "name": "file",
+            "name": "read_file",
             "message": "Enter the location of the JSON file to read",
-            // TODO: validate
+            "validate" : (answer) => {
+                if(!answer){
+                    return "file cannot be empty. Please enter a file name with path."
+                }
+                return true;
+            },
             "default": "./dist/data.json"
         }
     ]).then((answers) => {
         // TODO: check to make sure the file being read is a JSON file (has .json extenstion)
-        let filestring = answers.file.split('/');
+        // Some geek wrote this code. :D https://dev.to/codefinity/split-path-string-15fb
+        let filestring = answers.read_file.split('/');
         const fn = filestring.pop();        // file name
         const fp = filestring.join("/");    // file path
-        const file = new JSONDoc(fp,fn);
+        const file = new JSONDoc(fp,fn);    // TODO: should I delete this later?
         const data = file.readPage();
         // TODO: What if multiple teams are found?
         myTeam.readJSON(data);
         console.log(`Data from ${answers.file} loaded into Team ${myTeam.getTeamName()}`);
     }).catch((error) => console.error(`An error occurred (loadJSONData)`, error));
+    return dataMenu();
 }
 
+/**
+ * @method saveJSONData
+ * @desc Save the entered data so far into a JSON file. Ideal if you need to demo a lot of data.
+ * @returns 
+ * @note THIS WORKS! (happy dance!)
+ */
 function saveJSONData(){
     inquirer.prompt([
         {
             "type": "input",
             "name": "file",
             "message": "Enter where to save the JSON file",
-            // TODO: validate
+            "validate" : (answer) => {
+                if(!answer){
+                    return "file cannot be empty. Please enter a file name with path."
+                }
+                return true;
+            },
             "default": "./dist/data.json"
         }
+        // TODO: if file exists, ask if you would like to overwrite it first.
     ]).then((answers) => {
         // TODO: check to make sure the file being saved is a JSON file (has .json extenstion)
         let filestring = answers.file.split('/');
         const fn = filestring.pop();        // file name
         const fp = filestring.join("/");    // file path
-        const file = new JSONDoc(fp,fn);
+        const file = new JSONDoc(fp,fn);    // TODO: should I delete this later?
         const data = myTeam.writeJSON();
         file.setContent(data);
         file.writePage();
     }).catch((error) => console.error(`An error occurred (saveJSONData)`, error));
+    return dataMenu();
 }
 
 function viewJSONData(){
@@ -143,7 +169,7 @@ function viewJSONTable(){
  * @todo Select the team object we want to manipulate
  * @todo Delete a team object
  */
- function teamMenu(){
+function teamMenu(){
     //menus.headers.team();
     inquirer.prompt([menus.content.team]).then((answers) => {
         const tasks = {
@@ -310,7 +336,8 @@ function updateMember(){
             "type" : "list",
             "name" : "who",
             "message": "Which member should I modify?",
-            "choices": myTeam.getNameChoices() //choices.who()
+            "choices": myTeam.getNameChoices(), //choices.who()
+            "loop": false
         },
         // questions.what (update)
         {
@@ -345,6 +372,7 @@ function updateMember(){
                     }
                 ];
             },
+            "loop": false,
             "when": (answers) => answers.who !== 0      // or should this be answers.who.value?
         },
         {
@@ -435,7 +463,8 @@ function removeMember(){
             "type"    : "list",
             "name"    : "who",
             "message" : "Which member should I remove?",
-            "choices" : myTeam.getNameChoices() //choices.who()
+            "choices" : myTeam.getNameChoices(), //choices.who()
+            "loop": false
         }
     ]).then((answer) => {
         if(answer.who !== 0){
@@ -460,7 +489,8 @@ function showMember(){
             "type"    : "list",
             "name"    : "who",
             "message" : "Which member should I display?",
-            "choices" : myTeam.getNameChoices() //choices.who()
+            "choices" : myTeam.getNameChoices(), //choices.who()
+            "loop": false
         }
     ]).then((answer) => {
         if(answer.who !== 0){
@@ -507,7 +537,8 @@ function findMembers(){
                 }                   // TODO: Back out of this prompt with this option
                 */
             ],
-            "default": "name"
+            "default": "name",
+            "loop": false
         },
         {
             ...questions.id,
@@ -723,7 +754,8 @@ function generateMemberProfiles(){
                     ...list
                 ];
             },
-            "default": "all"
+            "default": "all",
+            "loop": false
         }
     ]).then((answers) => {
         if(answers.who === 0){
@@ -907,7 +939,8 @@ function exitProgram(){
         "type": "confirm",
         "name": "exit",
         "message": "Are you sure you want to quit this program?",
-        "default" : false
+        "default" : false,
+        "loop": false
     }]).then((answers) => {
         if(answers.exit){
             console.log("Goodbye.");

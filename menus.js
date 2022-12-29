@@ -40,6 +40,10 @@ export const menus = {
             "message": "What would you like to do?",
             "choices" : [
                 {
+                    "name": "Load/Save JSON data",
+                    "value": "data"
+                },
+                {
                     "name": "Set/Get Team Name",
                     "value": "team"
                 },
@@ -60,7 +64,8 @@ export const menus = {
                     "name": "Quit this program",
                     "value": "exit"
                 }
-            ]
+            ],
+            "loop": false
         },
         "data": {
             "type" : "list",
@@ -77,11 +82,11 @@ export const menus = {
                 },
                 {
                     "name": "View Data as JSON (long and sloppy!)",
-                    "value": "viewJSONData"
+                    "value": "viewData"
                 },
                 {
                     "name": "View Data as Table (neater, cleaner, SQL-like)",
-                    "value": "viewJSONTable"
+                    "value": "viewTable"
                 },
                 new inquirer.Separator(),
                 {
@@ -92,7 +97,8 @@ export const menus = {
                     "name": "Quit this program",
                     "value": "exit"
                 }
-            ]
+            ],
+            "loop": false
         },
         "team": {
             "type" : "list",
@@ -116,7 +122,8 @@ export const menus = {
                     "name": "Return to the Main Menu",
                     "value": "main"
                 }
-            ]
+            ],
+            "loop": false
         },
         "members" : {
             "type"    : "list",
@@ -157,7 +164,8 @@ export const menus = {
                     "value": "main"
                 }
             ],
-            "default" : "read"
+            "default" : "read",
+            "loop": false
         },
         "generate" : {
             "type"    : "list",
@@ -202,7 +210,8 @@ export const menus = {
                     "value": "main"
                 }
             ],
-            "default": "everything"
+            "default": "everything",
+            "loop": false
         },
         // TODO: Add menus for Generate methods here
     },
@@ -212,6 +221,10 @@ export const menus = {
             "name" : "menu",
             "message": "What would you like help with?",
             "choices": [
+                {
+                    "name": "How to I load/save/view data as JSON?",
+                    "value": "data",
+                },
                 {
                     "name": "How to I get or set a team name?",
                     "value": "team",
@@ -233,7 +246,24 @@ export const menus = {
                     "name": "Return to the main menu",
                     "value": "back"
                 }
-            ]
+            ],
+            "loop": false
+        },
+        "data"     : {
+            "type": "list",
+            "name": "menu",
+            "message": "Return",
+            "choices": [
+                {
+                    "name": "Data Menu",
+                    "value": "back"
+                },
+                {
+                    "name": "Help Menu",
+                    "value": "help"
+                }
+            ],
+            "loop": false
         },
         "team"     : {
             "type": "list",
@@ -249,6 +279,7 @@ export const menus = {
                     "value": "help"
                 }
             ],
+            "loop": false
         },
         "members" : {
             "type": "list",
@@ -264,6 +295,7 @@ export const menus = {
                     "value": "help"
                 }
             ],
+            "loop": false
         },
         "generate" : {
             "type": "list",
@@ -279,6 +311,7 @@ export const menus = {
                     "value": "help"
                 }
             ],
+            "loop": false
         }
     }
 }
